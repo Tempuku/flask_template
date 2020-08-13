@@ -1,0 +1,79 @@
+<!-- templates/base.html -->
+{% extends 'admin/base.html' %}
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+{% endblock %}
+{% block page_body %}
+<section class="hero is-primary is-fullheight">
+    {% if current_user.is_authenticated %}
+        <div class="hero-head">
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    {% block brand %}
+                        <div class="navbar-item">
+                            <img src="https://image.flaticon.com/icons/svg/270/270023.svg" width="28" height="28">
+                        </div>
+<!--                    <a  href="{{ admin_view.admin.url }}">{{ admin_view.admin.name }}</a>-->
+                    {% endblock %}
+                    <div class="navbar-item">
+                        {% block main_menu %}
+                        <ul class="nav navbar-nav">
+                            {{ layout.menu() }}
+                        </ul>
+                        {% endblock %}
+
+                        {% block menu_links %}
+                        <ul class="nav navbar-nav navbar-right">
+                            {{ layout.menu_links() }}
+                        </ul>
+                        {% endblock %}
+                        {% block access_control %}
+                        {% endblock %}
+                    </div>
+                        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMenuHeroA">
+                          <span aria-hidden="true"></span>
+                          <span aria-hidden="true"></span>
+                          <span aria-hidden="true"></span>
+                        </a>
+                </div>
+                <div class="navbar-end navbar-menu" id="navbarMenuHeroA">
+                  <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-info" href="{{ url_for('auth.logout') }}">
+                            Logout
+                        </a>
+                        <a class="button is-danger" href="/data/?flt0_3=error">
+                            <strong>errors</strong>
+                        </a>
+                    </div>
+                  </div>
+                </div>
+            </nav>
+        </div>
+    {% endif %}
+        <div class="hero-body">
+            <div class="container has-text-centered is-narrow has-text-black" style="overflow: auto;">
+               {% block body %}
+               {% endblock %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block tail_js %}
+{{ super() }}
+<script>
+$(document).ready(function() {
+
+  // Check for click events on the navbar burger icon
+  $(".navbar-burger").click(function() {
+
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      $(".navbar-burger").toggleClass("is-active");
+      $(".navbar-menu").toggleClass("is-active");
+      $(".navbar-menu").css("z-index: 2;");
+
+  });
+});
+</script>
+{% endblock %}
